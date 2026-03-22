@@ -83,7 +83,7 @@ PlanForge uses **Anthropic's Claude API** to automatically:
 ## Project Structure
 
 ```
-DevProject_AI/
+PlanForge_AI/
 │
 ├── .env.example                           ← Environment variable template
 ├── .gitignore                             ← Ignores .env and venv
@@ -174,8 +174,8 @@ DevProject_AI/
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone https://github.com/Shine-23/DevProject-AI.git
-cd DevProject-AI
+git clone https://github.com/Shine-23/PlanForge-AI.git
+cd PlanForge-AI
 ```
 
 ---
@@ -211,7 +211,7 @@ Edit `backend/.env`:
 
 ```
 ANTHROPIC_API_KEY=your_api_key_here
-DATABASE_URL=postgresql://postgres:password@localhost:5432/devproject_ai
+DATABASE_URL=postgresql://postgres:password@localhost:5432/PlanForge_ai
 ```
 
 Get your Anthropic API key at → https://console.anthropic.com
@@ -221,7 +221,7 @@ Get your Anthropic API key at → https://console.anthropic.com
 ### Step 5 — Create the PostgreSQL Database
 
 ```bash
-psql -U postgres -c "CREATE DATABASE devproject_ai;"
+psql -U postgres -c "CREATE DATABASE PlanForge_ai;"
 ```
 
 ---
@@ -255,7 +255,7 @@ Open → http://localhost:8000
 1. Go to → https://railway.app
 2. Sign in with GitHub
 3. Click "New Project" → "Deploy from GitHub repo"
-4. Select `DevProject-AI`
+4. Select `PlanForge-AI`
 5. Add a **PostgreSQL** plugin — Railway sets `DATABASE_URL` automatically
 6. Add environment variable:
    ```
@@ -296,8 +296,8 @@ curl http://localhost:8000/history
 
 | | URL |
 |---|---|
-| 🔗 Live App | https://devproject-ai-production.up.railway.app |
-| 📦 GitHub | https://github.com/Shine-23/DevProject-AI |
+| 🔗 Live App | https://PlanForge-ai-production.up.railway.app |
+| 📦 GitHub | https://github.com/Shine-23/PlanForge-AI |
 
 ---
 
