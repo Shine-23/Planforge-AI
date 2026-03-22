@@ -24,14 +24,14 @@ that thinks through scope, architecture, and risk before a single line of code i
 
 DevProject AI uses **Anthropic's Claude API** to automatically:
 
-- ✅ Analyse requirements and extract goals, users, features, and constraints
-- ✅ Separate MVP scope from future enhancements
-- ✅ Propose a stack-aware high-level architecture
-- ✅ Draft API contracts with endpoints, payloads, and auth rules
-- ✅ Break work into milestones, tasks, and subtasks
-- ✅ Surface risks, ambiguities, and integration concerns
-- ✅ Generate structured development tickets with acceptance criteria and story points
-- ✅ Save, load, and delete plans with full ticket history
+- Analyse requirements and extract goals, users, features, and constraints
+- Separate MVP scope from future enhancements
+- Propose a stack-aware high-level architecture
+- Draft API contracts with endpoints, payloads, and auth rules
+- Break work into milestones, tasks, and subtasks
+- Surface risks, ambiguities, and integration concerns
+- Generate structured development tickets with acceptance criteria and story points
+- Save, load, and delete plans with full ticket history
 
 ---
 
@@ -310,14 +310,6 @@ curl http://localhost:8000/history
 - [ ] Support for more file types in repo context (.docx, .pdf)
 - [ ] Fine-tuned model on engineering planning examples
 - [ ] Jira / Linear integration for ticket export
-
----
-
-## Built By
-
-**Shine-23**
-Built as a real-world AI engineering tool using Claude API,
-FastAPI, PostgreSQL, Docker, and Railway.
 
 ---
 
