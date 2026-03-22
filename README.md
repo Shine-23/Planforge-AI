@@ -1,4 +1,4 @@
-# PlanForge
+# PlanForge AI
 ### AI-powered engineering planning assistant for developers and teams
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
