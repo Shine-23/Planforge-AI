@@ -1,66 +1,82 @@
 # DevProject AI
+### AI-powered engineering planning assistant for developers and teams
 
-An AI-powered engineering planning assistant that converts rough product requirements into task breakdowns, architecture notes, API drafts, and implementation plans.
-
----
-
-## Problem
-Developers often start with a product idea but lack a structured engineering plan to implement it. The gap between "I have an idea" and "I know what to build first" slows teams down and leads to poor architectural decisions made under pressure.
-
-DevProject AI fills that gap — acting as a senior engineering collaborator that thinks through scope, architecture, and risk before a single line of code is written.
-
----
-
-## Users
-- Solo developers
-- Startup teams
-- Tech leads
-- Engineering managers
-- Hackathon builders
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.135-green)
+![Claude](https://img.shields.io/badge/Claude-API-orange)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Docker](https://img.shields.io/badge/Docker-27.3-blue)
+![Railway](https://img.shields.io/badge/Deployed-Railway-blueviolet)
 
 ---
 
-## Core Features
+## Problem Statement
 
-| Feature | Description |
-|---|---|
-| Requirement analysis | Extracts goals, users, features, and constraints from raw input |
-| Scope definition | Separates MVP from future enhancements |
-| Architecture planning | Proposes a stack-aware high-level architecture |
-| API contract drafting | Drafts endpoints with methods, payloads, and auth rules |
-| Task decomposition | Breaks work into milestones, tasks, and subtasks |
-| Risk review | Surfaces ambiguity, unknowns, and integration risks |
-| Implementation sequencing | Recommends practical build order |
-| Development tickets | Generates structured tickets with acceptance criteria and story points |
-| Plan history | Saves, loads, and deletes plans with their tickets |
+Developers often start with a product idea but no structured plan to build it.
+The gap between **"I have an idea"** and **"I know what to build first"**
+slows teams down and leads to poor architectural decisions made under pressure.
+DevProject AI fills that gap — acting as a senior engineering collaborator
+that thinks through scope, architecture, and risk before a single line of code is written.
 
 ---
 
-## MCP Tools
-Three tools enrich the AI plan with real project context:
+## Solution
 
-| Tool | Purpose |
-|---|---|
-| `repo_tool` | Scans a local directory or clones a public GitHub repo |
-| `docs_tool` | Fetches documentation from a URL or local file |
-| `shell_tool` | Runs shell commands and captures output (e.g. `pip list`) |
+DevProject AI uses **Anthropic's Claude API** to automatically:
 
-All three tools feed their output into Claude before the plan is generated. If any tool fails the request returns a `400` error immediately — context is never silently skipped.
+- ✅ Analyse requirements and extract goals, users, features, and constraints
+- ✅ Separate MVP scope from future enhancements
+- ✅ Propose a stack-aware high-level architecture
+- ✅ Draft API contracts with endpoints, payloads, and auth rules
+- ✅ Break work into milestones, tasks, and subtasks
+- ✅ Surface risks, ambiguities, and integration concerns
+- ✅ Generate structured development tickets with acceptance criteria and story points
+- ✅ Save, load, and delete plans with full ticket history
 
-> **Local paths vs. deployed:** Local directory and file paths (e.g. `C:\Users\...`) only work when running the backend locally. When deployed on Railway, the backend runs on a remote Linux server with no access to your machine's file system. Use a public GitHub URL instead for repo context when using the deployed version.
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────┐
+│   Frontend (HTML / CSS / JS)    │
+└──────────────┬──────────────────┘
+               │ HTTP requests
+               ▼
+┌─────────────────────────────────┐
+│      main.py (FastAPI)          │
+└──────────────┬──────────────────┘
+               │ MCP context + requirement
+               ▼
+┌─────────────────────────────────┐
+│   planner_service.py (Agent)    │
+└──────────────┬──────────────────┘
+               │ Anthropic API calls
+               ▼
+┌─────────────────────────────────┐
+│      Claude API (Anthropic)     │
+└──────────────┬──────────────────┘
+               │ structured plan → saved to
+               ▼
+┌─────────────────────────────────┐
+│       PostgreSQL Database       │
+└─────────────────────────────────┘
+```
 
 ---
 
 ## Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Frontend | HTML / CSS / JS |
+|-------|-----------|
+| AI Model | Claude (Anthropic) — claude-sonnet-4-6 |
 | Backend | FastAPI (Python) |
-| AI layer | Claude API (Anthropic) — claude-sonnet-4-6 |
 | Database | PostgreSQL |
-| Deployment | Docker + Railway |
+| Container | Docker |
+| Deployment | Railway |
+| Frontend | HTML / CSS / JS |
 | Env management | python-dotenv |
+| Version Control | GitHub |
 
 ---
 
@@ -68,58 +84,71 @@ All three tools feed their output into Claude before the plan is generated. If a
 
 ```
 DevProject_AI/
-├── .claude/
-│   ├── CLAUDE.md                              # Claude Code instructions
-│   ├── skills/
-│   │   └── SKILL.md                           # Agent workflow definition (9 steps)
-│   └── agents/
-│       ├── ENGINEERING_PLANNING_AGENT.md      # Planner agent role and behavior
-│       └── TASK_GENERATOR_AGENT.md            # Task generator agent role and behavior
+│
+├── .env.example                           ← Environment variable template
+├── .gitignore                             ← Ignores .env and venv
+├── Dockerfile                             ← Docker build config
+├── docker-compose.yml                     ← Docker run config
+├── README.md                              ← You are here!
+│
 ├── backend/
-│   ├── app/
-│   │   ├── core/
-│   │   │   └── config.py                      # Env loading
-│   │   ├── api/
-│   │   │   ├── routes_plan.py                 # /plan/* endpoints
-│   │   │   └── routes_history.py              # /history/* endpoints
-│   │   ├── schemas/
-│   │   │   ├── plan.py                        # Plan request/response models
-│   │   │   ├── task.py                        # Ticket models
-│   │   │   └── history.py                     # History models
-│   │   ├── db/
-│   │   │   ├── database.py                    # SQLAlchemy engine and session
-│   │   │   └── models.py                      # PlanRecord, TicketRecord ORM models
-│   │   ├── services/
-│   │   │   ├── claude_service.py              # Claude API interactions
-│   │   │   ├── planner_service.py             # Plan generation logic
-│   │   │   └── task_service.py                # Ticket generation logic
-│   │   ├── mcp_tools/
-│   │   │   ├── repo_tool.py                   # Repo / GitHub scanner
-│   │   │   ├── docs_tool.py                   # Docs / URL fetcher
-│   │   │   └── shell_tool.py                  # Shell command runner
-│   │   └── agent_prompt.py                    # Agent system prompt loader
-│   ├── main.py                                # Entry point + CORS + lifespan
-│   ├── .env                                   # API keys (gitignored)
-│   └── requirements.txt
+│   ├── main.py                            ← Entry point + CORS + lifespan
+│   ├── requirements.txt                   ← Python dependencies
+│   ├── .env                               ← API keys (never commit)
+│   └── app/
+│       ├── agent_prompt.py                ← Agent system prompt loader
+│       ├── core/
+│       │   └── config.py                  ← Env loading
+│       ├── api/
+│       │   ├── routes_plan.py             ← /plan/* endpoints
+│       │   └── routes_history.py          ← /history/* endpoints
+│       ├── schemas/
+│       │   ├── plan.py                    ← Plan request/response models
+│       │   ├── task.py                    ← Ticket models
+│       │   └── history.py                 ← History models
+│       ├── db/
+│       │   ├── database.py                ← SQLAlchemy engine and session
+│       │   └── models.py                  ← PlanRecord, TicketRecord ORM models
+│       ├── services/
+│       │   ├── planner_service.py         ← Plan generation logic
+│       │   ├── task_service.py            ← Ticket generation logic
+│       │   └── claude_service.py          ← Claude API interactions
+│       └── mcp_tools/
+│           ├── repo_tool.py               ← Repo / GitHub scanner
+│           ├── docs_tool.py               ← Docs / URL fetcher
+│           └── shell_tool.py              ← Shell command runner
+│
 ├── frontend/
-│   ├── index.html                             # UI structure
-│   ├── style.css                              # Dark theme styles
-│   └── script.js                             # API calls and plan/ticket rendering
-├── docs/
-│   ├── agent.md                               # Agent documentation
-│   ├── skill.md                               # Skill workflow documentation
-│   ├── mcp_tools.md                           # MCP tools documentation
-│   └── backend_flow.md                        # End-to-end request flow
-├── .env.example                               # Environment variable template
-└── README.md
+│   ├── index.html                         ← UI structure
+│   ├── style.css                          ← Dark theme styles
+│   └── script.js                          ← API calls and plan/ticket rendering
+│
+└── docs/
+    ├── agent.md                           ← Agent documentation
+    ├── skill.md                           ← Skill workflow documentation
+    ├── mcp_tools.md                       ← MCP tools documentation
+    └── backend_flow.md                    ← End-to-end request flow
 ```
+
+---
+
+## MCP Tools (3 Context Tools)
+
+| Tool | Input | Output |
+|------|-------|--------|
+| `repo_tool` | Local directory path or public GitHub URL | File contents (.py, .md, .txt, .json, .yaml, .yml, .toml) |
+| `docs_tool` | URL or local file path | Fetched documentation text |
+| `shell_tool` | Shell command (e.g. `pip list`) | Command stdout as context |
+
+> **Note:** Local directory and file paths only work when running the backend locally.
+> When deployed on Railway, use a public GitHub URL for repo context instead.
 
 ---
 
 ## API Endpoints
 
 | Method | Endpoint | Description |
-|---|---|---|
+|--------|----------|-------------|
 | GET | `/` | Health check (includes DB status) |
 | POST | `/plan/generate-with-context` | Generate plan with optional repo, docs, and shell context |
 | POST | `/plan/generate-tasks` | Generate development tickets from a plan |
@@ -130,63 +159,168 @@ DevProject_AI/
 
 ---
 
-## Quick Start
+## Getting Started
 
-### Local development (no Docker)
+### Prerequisites
+
+- Python 3.12+
+- PostgreSQL (local install or Railway plugin)
+- Docker Desktop (optional)
+- Anthropic API key → https://console.anthropic.com
+- Git
+
+---
+
+### Step 1 — Clone the Repository
+
 ```bash
-# 1. Clone the repo
-git clone https://github.com/Shine-23/agentic-ai-hands-on
-cd DevProject_AI
-
-# 2. Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate   # Windows
-source venv/bin/activate  # Mac/Linux
-
-# 3. Install dependencies
-cd backend
-pip install -r requirements.txt
-
-# 4. Configure environment variables
-cp ../.env.example .env
-# Edit .env — set ANTHROPIC_API_KEY and DATABASE_URL
-
-# 5. Create the PostgreSQL database
-psql -U postgres -c "CREATE DATABASE devproject_ai;"
-
-# 6. Start the backend
-uvicorn main:app --reload
-
-# 7. Open the frontend
-# Open frontend/index.html directly in your browser (no build step needed)
+git clone https://github.com/Shine-23/DevProject-AI.git
+cd DevProject-AI
 ```
 
-### Local development (Docker)
+---
+
+### Step 2 — Create a Virtual Environment
+
 ```bash
-# Copy and fill in your API key
+python -m venv venv
+venv\Scripts\activate        # Windows
+source venv/bin/activate     # Mac/Linux
+```
+
+---
+
+### Step 3 — Install Dependencies
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+---
+
+### Step 4 — Set Up Environment Variables
+
+Copy the template and fill in your values:
+
+```bash
+cp .env.example backend/.env
+```
+
+Edit `backend/.env`:
+
+```
+ANTHROPIC_API_KEY=your_api_key_here
+DATABASE_URL=postgresql://postgres:password@localhost:5432/devproject_ai
+```
+
+Get your Anthropic API key at → https://console.anthropic.com
+
+---
+
+### Step 5 — Create the PostgreSQL Database
+
+```bash
+psql -U postgres -c "CREATE DATABASE devproject_ai;"
+```
+
+---
+
+### Step 6 — Run Locally (Without Docker)
+
+```bash
+cd backend
+uvicorn main:app --reload
+```
+
+Open `frontend/index.html` directly in your browser (no build step needed).
+
+---
+
+### Step 7 — Run with Docker
+
+```bash
 cp .env.example backend/.env
 # Edit backend/.env — set ANTHROPIC_API_KEY (DATABASE_URL is handled by docker-compose)
 
 docker compose up --build
-# Visit http://localhost:8000
 ```
 
-### Deploy to Railway
-1. Push this repo to GitHub
-2. Create a new Railway project → **Deploy from GitHub repo**
-3. Set the **Root Directory** to `DevProject_AI`
-4. Add a **PostgreSQL** plugin — Railway sets `DATABASE_URL` automatically
-5. Add environment variable: `ANTHROPIC_API_KEY=your-key`
-6. Deploy — Railway detects `railway.toml` and uses the Dockerfile automatically
+Open → http://localhost:8000
 
 ---
 
-## Related Files
-- [`docs/agent.md`](docs/agent.md) — agent purpose, sample inputs and outputs
-- [`docs/skill.md`](docs/skill.md) — 9-step planning workflow
-- [`docs/mcp_tools.md`](docs/mcp_tools.md) — MCP tools with sample inputs and outputs
-- [`docs/backend_flow.md`](docs/backend_flow.md) — end-to-end request flow
-- [`.claude/skills/SKILL.md`](.claude/skills/SKILL.md) — full agent workflow
-- [`.claude/agents/ENGINEERING_PLANNING_AGENT.md`](.claude/agents/ENGINEERING_PLANNING_AGENT.md) — planner agent role definition
-- [`.claude/agents/TASK_GENERATOR_AGENT.md`](.claude/agents/TASK_GENERATOR_AGENT.md) — task generator agent role definition
-- [`backend/app/agent_prompt.py`](backend/app/agent_prompt.py) — agent system prompt used in code
+### Step 8 — Deploy to Railway
+
+1. Go to → https://railway.app
+2. Sign in with GitHub
+3. Click "New Project" → "Deploy from GitHub repo"
+4. Select `DevProject-AI`
+5. Add a **PostgreSQL** plugin — Railway sets `DATABASE_URL` automatically
+6. Add environment variable:
+   ```
+   ANTHROPIC_API_KEY=your_key_here
+   ```
+7. Click "Deploy" — Railway detects `railway.toml` and uses the Dockerfile automatically
+8. Go to Settings → Networking → Generate Domain
+
+---
+
+## Testing the API
+
+### Generate an Engineering Plan
+
+```bash
+curl -X POST http://localhost:8000/plan/generate-with-context \
+  -H "Content-Type: application/json" \
+  -d '{"requirement": "Build a task management app with user auth and team collaboration"}'
+```
+
+### Generate Tasks from a Plan
+
+```bash
+curl -X POST http://localhost:8000/plan/generate-tasks \
+  -H "Content-Type: application/json" \
+  -d '{"requirement_summary": "...", "implementation_plan": "..."}'
+```
+
+### List Saved Plans
+
+```bash
+curl http://localhost:8000/history
+```
+
+---
+
+## Live Demo
+
+| | URL |
+|---|---|
+| 🔗 Live App | https://devproject-ai-production.up.railway.app |
+| 📦 GitHub | https://github.com/Shine-23/DevProject-AI |
+
+---
+
+## Future Improvements
+
+- [ ] Voice input — describe your idea verbally
+- [ ] Export plans as PDF or Notion pages
+- [ ] GitHub Issues integration — push tickets directly to a repo
+- [ ] Team workspaces with shared plan history
+- [ ] Support for more file types in repo context (.docx, .pdf)
+- [ ] Fine-tuned model on engineering planning examples
+- [ ] Jira / Linear integration for ticket export
+
+---
+
+## Built By
+
+**Shine-23**
+Built as a real-world AI engineering tool using Claude API,
+FastAPI, PostgreSQL, Docker, and Railway.
+
+---
+
+## License
+
+MIT License — feel free to use and modify for your own projects.
