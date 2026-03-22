@@ -47,6 +47,8 @@ Three tools enrich the AI plan with real project context:
 
 All three tools feed their output into Claude before the plan is generated. If any tool fails the request returns a `400` error immediately — context is never silently skipped.
 
+> **Local paths vs. deployed:** Local directory and file paths (e.g. `C:\Users\...`) only work when running the backend locally. When deployed on Railway, the backend runs on a remote Linux server with no access to your machine's file system. Use a public GitHub URL instead for repo context when using the deployed version.
+
 ---
 
 ## Tech Stack
