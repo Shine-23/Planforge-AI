@@ -1,4 +1,4 @@
-# DevProject AI
+# PlanForge
 ### AI-powered engineering planning assistant for developers and teams
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
@@ -15,14 +15,14 @@
 Developers often start with a product idea but no structured plan to build it.
 The gap between **"I have an idea"** and **"I know what to build first"**
 slows teams down and leads to poor architectural decisions made under pressure.
-DevProject AI fills that gap — acting as a senior engineering collaborator
+PlanForge fills that gap — acting as a senior engineering collaborator
 that thinks through scope, architecture, and risk before a single line of code is written.
 
 ---
 
 ## Solution
 
-DevProject AI uses **Anthropic's Claude API** to automatically:
+PlanForge uses **Anthropic's Claude API** to automatically:
 
 - Analyse requirements and extract goals, users, features, and constraints
 - Separate MVP scope from future enhancements

@@ -1,4 +1,4 @@
-# Backend Flow — DevProject AI
+# Backend Flow — PlanForge
 
 ## Overview
 How a request travels through the backend from the user to Claude and back.

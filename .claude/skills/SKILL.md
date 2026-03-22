@@ -1,7 +1,7 @@
 # SKILL: Engineering Planning
 
 ## Purpose
-This skill powers the **DevProject AI** assistant — an AI-powered engineering planning tool that converts product requirements into structured engineering plans.
+This skill powers the **PlanForge** assistant — an AI-powered engineering planning tool that converts product requirements into structured engineering plans.
 
 It targets: solo developers, startup teams, tech leads, engineering managers, and hackathon builders.
 

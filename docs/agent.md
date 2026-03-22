@@ -1,7 +1,7 @@
 # Engineering Planning Agent — Purpose, Inputs & Outputs
 
 ## What is the Agent?
-The Engineering Planning Agent is the AI brain of DevProject AI.
+The Engineering Planning Agent is the AI brain of PlanForge.
 It is powered by Claude (claude-sonnet-4-6) and acts as a **senior engineer collaborator**
 that thinks through scope, architecture, risks, and sequencing before implementation starts.
 

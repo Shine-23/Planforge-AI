@@ -1,4 +1,4 @@
-# Entry point for the DevProject AI backend.
+# Entry point for the PlanForge backend.
 # Initialises the FastAPI app, configures CORS, and registers the /plan and /history routers.
 #
 # NOTE: create_all() creates missing tables but does NOT apply column changes to existing ones.
@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     # No teardown needed — connection pool closes automatically
 
 
-app = FastAPI(title="DevProject AI API", lifespan=lifespan)
+app = FastAPI(title="PlanForge API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -61,7 +61,7 @@ def health_check(response: Response):
 
     return {
         "status": "ok" if healthy else "degraded",
-        "api": "DevProject AI backend is running",
+        "api": "PlanForge backend is running",
         "database": db_status,
     }
 

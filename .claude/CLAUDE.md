@@ -1,4 +1,4 @@
-# DevProject AI — Claude Code Instructions
+# PlanForge — Claude Code Instructions
 
 ## Project overview
 AI-powered engineering planning assistant that converts rough product requirements into structured engineering plans (architecture, API drafts, task breakdowns, risk reviews) and development tickets.

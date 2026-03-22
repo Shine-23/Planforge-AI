@@ -46,7 +46,7 @@ def _parse_github_url(url: str) -> tuple[str, str]:
 def _clone_github_repo(clone_url: str) -> Path:
     # Use a parent temp dir and let git create the 'repo' subdirectory itself.
     # Cloning into a pre-existing directory can fail on some git/Windows versions.
-    tmp_parent = tempfile.mkdtemp(prefix="devproject_repo_")
+    tmp_parent = tempfile.mkdtemp(prefix="planforge_repo_")
     clone_target = Path(tmp_parent) / "repo"
     try:
         result = subprocess.run(
